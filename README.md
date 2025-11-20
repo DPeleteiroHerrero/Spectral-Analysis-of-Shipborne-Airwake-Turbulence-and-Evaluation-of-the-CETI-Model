@@ -36,7 +36,7 @@ This script processes airwake measurements for multiple ship motion cases and pr
 - For each position, creates a **2×2 PSD figure**:
   - `u_m_s` (top-left), `v_m_s` (top-right), `w_m_s` (bottom-left),
   - a large legend with all cases (bottom-right).
-- Uses consistent, colorblind-safe colors per case and logs processing steps to a log file.
+
 
 Output figures are stored under:
 
@@ -139,7 +139,7 @@ Small helper script to quickly scan CETI validation results and flag problematic
 - Writes a filtered CSV with only the failing rows:
   - `ceti_mismatches.csv`
 - Prints a concise summary of mismatches to the console (showing RMS, 2 dB %, variance ratio, and overlay path).
-- Tries to automatically **open `ceti_mismatches.csv`** in the default application (Windows/macOS/Linux), so you can inspect the flagged cases immediately.
+- Tries to automatically **open `ceti_mismatches.csv`** in the default application.
 
 ---
 
@@ -169,6 +169,39 @@ It then computes and writes:
 - A plain-text summary for reporting → `ceti_overview.txt`
 
 All key statistics are also printed in a readable form to the terminal.
+
+---
+
+## `build_case_folders_and_plots.py`
+
+This script post-processes the global `karman_fit_summary.csv` and creates **per-case summaries and diagnostic plots** of the fitted von Kármán parameters.
+
+### What it does
+
+- Reads `karman_fit_summary.csv` and selects one VK fit variant via `--method`  
+  (`simple`, `corrected`, or `weighted`).
+- Detects the velocity component (u, v, w) from filenames and parses probe coordinates
+  `x`, `y`, `z` from the `position` string.
+- Builds a “wide” table per position with:
+  - `Lu_u`, `Lu_v`, `Lu_w`
+  - `sigma_u`, `sigma_v`, `sigma_w`
+  - `fb_u`, `fb_v`, `fb_w`
+  - `x`, `y`, `z`, `case`, `position`
+- Computes useful ratios:
+  - \(L_u/(2L_v)\), \(L_u/(2L_w)\)
+  - \(\sigma_u/\sigma_v\), \(\sigma_u/\sigma_w\)
+
+For each case (e.g. `Case01`, `Case07`) it creates a folder in `case_outputs/CaseXX/` containing:
+
+- `summary_CaseXX.csv` – per-position table with all components, break frequencies and ratios.
+- 3-panel position maps (x–y, x–z, y–z) coloured by:
+  - \(L_u/(2L_v)\), \(L_u/(2L_w)\)
+  - \(\sigma_u/\sigma_v\), \(\sigma_u/\sigma_w\)
+- `scatter_CaseXX_fb_vs_z_<method>.png` – break frequency vs height \(z\) for u, v, w.
+- `scatter_CaseXX_Lu_vs_sigma_<method>.png` – \(L\) vs \(\sigma\) for u, v, w.
+- `map_CaseXX_sigmaw_xy_at_zslice_<method>.png` – x–y map at a representative z-slice coloured by \(\sigma_w\).
+
+All outputs are written under the folder specified by `--outdir` (default `case_outputs/`).
 
 ---
 
@@ -203,33 +236,3 @@ raw measurements → PSDs → fitted models → overlay plots.
 
 ---
 
-## `build_case_folders_and_plots.py`
-
-This script post-processes the global `karman_fit_summary.csv` and creates **per-case summaries and diagnostic plots** of the fitted von Kármán parameters.
-
-### What it does
-
-- Reads `karman_fit_summary.csv` and selects one VK fit variant via `--method`  
-  (`simple`, `corrected`, or `weighted`).
-- Detects the velocity component (u, v, w) from filenames and parses probe coordinates
-  `x`, `y`, `z` from the `position` string.
-- Builds a “wide” table per position with:
-  - `Lu_u`, `Lu_v`, `Lu_w`
-  - `sigma_u`, `sigma_v`, `sigma_w`
-  - `fb_u`, `fb_v`, `fb_w`
-  - `x`, `y`, `z`, `case`, `position`
-- Computes useful ratios:
-  - \(L_u/(2L_v)\), \(L_u/(2L_w)\)
-  - \(\sigma_u/\sigma_v\), \(\sigma_u/\sigma_w\)
-
-For each case (e.g. `Case01`, `Case07`) it creates a folder in `case_outputs/CaseXX/` containing:
-
-- `summary_CaseXX.csv` – per-position table with all components, break frequencies and ratios.
-- 3-panel position maps (x–y, x–z, y–z) coloured by:
-  - \(L_u/(2L_v)\), \(L_u/(2L_w)\)
-  - \(\sigma_u/\sigma_v\), \(\sigma_u/\sigma_w\)
-- `scatter_CaseXX_fb_vs_z_<method>.png` – break frequency vs height \(z\) for u, v, w.
-- `scatter_CaseXX_Lu_vs_sigma_<method>.png` – \(L\) vs \(\sigma\) for u, v, w.
-- `map_CaseXX_sigmaw_xy_at_zslice_<method>.png` – x–y map at a representative z-slice coloured by \(\sigma_w\).
-
-All outputs are written under the folder specified by `--outdir` (default `case_outputs/`).
