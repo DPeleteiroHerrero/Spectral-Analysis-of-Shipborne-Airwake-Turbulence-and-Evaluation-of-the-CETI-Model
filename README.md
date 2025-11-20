@@ -85,6 +85,8 @@ In practice, the **sliced 3-panel plots**
 `lines_<Case>_<var>_vs_xyz_sliced.png`  
 were the ones I actually used and could interpret most clearly.
 
+---
+
 ## `ceti_validate.py`
 
 This script validates the **CETI TF2 model** against the measured PSDs.
@@ -108,6 +110,8 @@ This script validates the **CETI TF2 model** against the measured PSDs.
     - `validate_ceti_synth_<psd_stem>.npy`
 - Collects all metrics into a single CSV summary:
   - `ceti_validation_summary.csv` (path configurable via `--out`).
+
+---
 
 ## `ceti_flag_mismatches_nocli.py`
 
