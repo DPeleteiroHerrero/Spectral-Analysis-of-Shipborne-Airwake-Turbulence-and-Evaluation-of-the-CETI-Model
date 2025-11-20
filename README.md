@@ -57,9 +57,9 @@ This script batch-fits turbulence models to all measured PSDs found under `Airwa
   - `fit_overlay_all_uv_Case06_x__14p961_y__7p087_z__7p480.png`  
   showing measured PSD + VK (unweighted and 1/f-weighted) for **u** and **v** side by side, with a single legend.
 - Writes two CSV summaries in the script directory:
-  - `karman_fit_summary.csv` – full fit diagnostics for every PSD.
+  - `karman_fit_summary.csv` – full fit diagnostics for every PSD, including the **von Kármán parameters** for both the simple and 1/f-weighted fits (the **weighted VK fit** is the one actually used/interpreted in the CETI analysis).
   - `tf2_params_simple.csv` – compact table of TF2 parameters only.
- 
+
 ---
 
 ## `tf2_graphs.py`
