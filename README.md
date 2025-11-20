@@ -31,3 +31,30 @@ Output figures are stored under:
 
 ```text
 superposition of psd 2/<position>/psdgrid_<position>_cases01-07.png
+
+## `karman_optimizer_batch.py`
+
+This script batch-fits turbulence models to all measured PSDs found under `AirwakeData/`.
+
+### What it does
+
+- Recursively scans `AirwakeData/` for all `psd_*.csv` files.
+- For each PSD file:
+  - Infers **case**, **probe position**, **motion type** and **component** from the path/filename.
+  - Loads the measured PSD (`f_Hz`, `Pxx`) and reads the mean flow speed \(U_0\) from a nearby `metadata.csv`.
+  - Fits three models in a given frequency band:
+    1. **Simplified von Kármán (VK)** model (unweighted log-PSD residuals).  
+    2. **Simplified VK with 1/f weighting** (emphasises low frequencies).  
+    3. **Second-order transfer-function (TF2)** model, using \(|H|^2\) with \(PSD_\text{in} \equiv 1\) and **no additive noise**.
+  - Saves several overlay figures **in the same folder as the PSD**:  
+    - `fit_overlay_<stem>.png` (VK)  
+    - `fit_overlay_weighted_<stem>.png` (VK, 1/f-weighted)  
+    - `fit_overlay_tf2_<stem>.png` (TF2, knee-centred)  
+    - `fit_overlay_both_<stem>.png` (measured vs VK vs TF2)  
+    - `fit_overlay_all_<stem>.png` (measured vs VK, weighted VK, TF2)
+- For **Case06 at `x__14p961_y__7p087_z__7p480`**, creates an extra two-panel figure:
+  - `fit_overlay_all_uv_Case06_x__14p961_y__7p087_z__7p480.png`  
+  showing measured PSD + VK (unweighted and 1/f-weighted) for **u** and **v** side by side, with a single legend.
+- Writes two CSV summaries in the script directory:
+  - `karman_fit_summary.csv` – full fit diagnostics for every PSD.
+  - `tf2_params_simple.csv` – compact table of TF2 parameters only.
