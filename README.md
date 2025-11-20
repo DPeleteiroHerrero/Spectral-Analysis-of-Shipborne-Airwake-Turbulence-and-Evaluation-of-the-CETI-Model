@@ -59,6 +59,8 @@ This script batch-fits turbulence models to all measured PSDs found under `Airwa
 - Writes two CSV summaries in the script directory:
   - `karman_fit_summary.csv` – full fit diagnostics for every PSD.
   - `tf2_params_simple.csv` – compact table of TF2 parameters only.
+ 
+---
 
 ## `tf2_graphs.py`
 
