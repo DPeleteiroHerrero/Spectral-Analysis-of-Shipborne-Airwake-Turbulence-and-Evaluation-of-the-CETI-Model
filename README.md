@@ -107,3 +107,19 @@ This script validates the **CETI TF2 model** against the measured PSDs.
 - Collects all metrics into a single CSV summary:
   - `ceti_validation_summary.csv` (path configurable via `--out`).
 
+## `ceti_flag_mismatches_nocli.py`
+
+Small helper script to quickly scan CETI validation results and flag problematic cases.
+
+### What it does
+
+- Looks for `ceti_validation_summary.csv` in the same folder (produced by the CETI validation script).
+- Applies built-in **pass/fail thresholds**:
+  - `pct_within_2dB` ≥ 70%
+  - `rms_log_binned` ≤ 0.12
+  - `var_ratio_model_over_meas` ∈ [0.88, 1.12]
+- Any row failing **any** of these becomes a **mismatch**.
+- Writes a filtered CSV with only the failing rows:
+  - `ceti_mismatches.csv`
+- Prints a concise summary of mismatches to the console (showing RMS, 2 dB %, variance ratio, and overlay path).
+- Tries to automatically **open `ceti_mismatches.csv`** in the default application (Windows/macOS/Linux), so you can inspect the flagged cases immediately.
