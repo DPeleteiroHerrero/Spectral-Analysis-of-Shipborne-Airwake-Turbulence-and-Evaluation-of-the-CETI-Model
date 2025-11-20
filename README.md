@@ -82,3 +82,28 @@ This script is a post-processing / visualization tool for `tf2_params_simple.csv
 In practice, the **sliced 3-panel plots**  
 `lines_<Case>_<var>_vs_xyz_sliced.png`  
 were the ones I actually used and could interpret most clearly.
+
+## CETI (TF2) validation script
+
+This script validates the **CETI TF2 model** against the measured PSDs.
+
+### What it does
+
+- Reads the TF2 parameter table `tf2_params_simple.csv` (one row per PSD).
+- For each row:
+  - Loads the corresponding measured PSD (using the `csv_rel` path).
+  - Reconstructs the CETI TF2 model PSD on the same frequency grid using the fitted parameters  
+    (`K`, `wz_rad_s`, `zetz`, `wp_rad_s`, `zetp`).
+  - Restricts the comparison to a chosen frequency band `[fmin, fmax]`.
+  - Computes several validation metrics, including:
+    - Log-binned RMS error in log10 space.
+    - Percentage of points within ±2 dB and ±3 dB.
+    - Band-limited variance ratio (∫S_model df / ∫S_meas df).
+    - L2 distance between **normalized cumulative variance curves**.
+  - (Optional) Saves an **overlay PSD plot** (measured vs CETI TF2) for each PSD if `--plot` is used:
+    - `validate_ceti_overlay_<psd_stem>.png`
+  - (Optional) Synthesizes a **time series** consistent with the model PSD for spot checks if `--synthesize` is used:
+    - `validate_ceti_synth_<psd_stem>.npy`
+- Collects all metrics into a single CSV summary:
+  - `ceti_validation_summary.csv` (path configurable via `--out`).
+
