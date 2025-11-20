@@ -159,3 +159,34 @@ It then computes and writes:
 
 All key statistics are also printed in a readable form to the terminal.
 
+---
+
+### Files inside `AirwakeData/…` probe folders
+
+Each subfolder under `AirwakeData/` corresponds to **one probe position + motion case**  
+(e.g. `AirwakeData_Case07_CPship_x__11p811_y__4p724_z__7p480_RegularSh`).
+
+Inside each of these folders you will typically find:
+
+- `measurements.csv` / `measurements.parquet`  
+  Raw time-series velocities and time stamps for that probe.
+
+- `metadata.csv`  
+  Probe and test metadata (e.g. mean wind speed \(U_0\), duration, sampling rate).
+
+- `psd_Case##_x__…_y__…_z__…_motion__u_m_s.csv` (and corresponding `v_m_s`, `w_m_s`)  
+  Measured one-sided PSDs for each velocity component, plus quick-look PSD plots:  
+  `psd_…_u_m_s.png`, `psd_…_v_m_s.png`, `psd_…_w_m_s.png`.
+
+- Model-fit overlay figures produced by `karman_optimizer_batch.py`, for each component:
+  - `fit_overlay_psd_…png` – measured PSD vs **simplified VK** fit.  
+  - `fit_overlay_weighted_psd_…png` – measured PSD vs **1/f-weighted VK** fit (the VK fit actually used).  
+  - `fit_overlay_vk_vs_weighted_psd_…png` – direct comparison of simple vs weighted VK.  
+  - `fit_overlay_tf2_psd_…png` – measured PSD vs **TF2 (CETI) model**.  
+  - `fit_overlay_both_psd_…png` – measured PSD + VK + TF2 in one plot.  
+  - `fit_overlay_all_psd_…png` – measured PSD + VK, weighted VK, and TF2 together.  
+  - (Some folders also contain `fit_overlay_corrected_psd_…png` as an extra diagnostic variant.)
+
+These files live **inside the `AirwakeData/` tree** and represent the full pipeline for each probe:
+raw measurements → PSDs → fitted models → overlay plots.
+
