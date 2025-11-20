@@ -30,9 +30,7 @@ This script processes airwake measurements for multiple ship motion cases and pr
 Output figures are stored under:
 
 ```text
-superposition of psd 2/<position>/psdgrid_<position>_cases01-07.png
-
-## `karman_optimizer_batch.py`
+superposition of psd 2/<position>/psdgrid_<position>_cases01-07.pn## `karman_optimizer_batch.py`
 
 This script batch-fits turbulence models to all measured PSDs found under `AirwakeData/`.
 
