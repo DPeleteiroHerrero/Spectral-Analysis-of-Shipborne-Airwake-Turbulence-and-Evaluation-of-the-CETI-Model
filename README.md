@@ -1,10 +1,21 @@
 # Spectral-Analysis-of-Shipborne-Airwake-Turbulence-and-Evaluation-of-the-CETI-Model
 # Airwake PSD Analysis & Model Fitting
 
-This repository contains two main scripts:
+This repository contains the following main scripts:
 
-- `run_airwake_psd_superposition_grid.py` – generates PSD comparison plots for all probe positions.  
-- `karman_optimizer_batch.py` – batch-fits turbulence models to all computed PSDs and creates overlay figures + summary tables.
+- `run_airwake_psd_superposition_grid.py` – computes PSDs for all probes (u, v, w) and creates 2×2 comparison plots (u, v, w + legend) overlaying Cases 01–07 at each position, while also writing per-case PSD CSVs.
+
+- `karman_optimizer_batch.py` – batch-fits turbulence models to all `psd_*.csv` files: simplified von Kármán (simple + 1/f-weighted) and a second-order TF2 model. It generates overlay figures in each probe folder and writes the global summaries `karman_fit_summary.csv` (VK parameters, including the weighted fit actually used) and `tf2_params_simple.csv` (TF2 parameters only).
+
+- `tf2_all_vars_maps_and_lines.py` – takes `tf2_params_simple.csv` and builds spatial maps and line plots of TF2 parameters per case. In practice, the sliced x/y/z line plots are the ones I really used and could interpret.
+
+- `ceti_validate.py` – validates the CETI (TF2) model against the measured PSDs using `tf2_params_simple.csv`, produces “measured vs CETI” overlay plots, and writes `ceti_validation_summary.csv` with accuracy metrics for every probe/component.
+
+- `ceti_flag_mismatches_nocli.py` – small helper that scans `ceti_validation_summary.csv`, applies fixed thresholds, prints a short console summary, and writes only the failing rows to `ceti_mismatches.csv`.
+
+- `ceti_analyze_overview.py` – post-processes `ceti_validation_summary.csv` to give an overview of CETI performance: mismatch percentages by case, component, and position (x, y, z), plus example best/worst fits. It also writes several small CSV tables and a text summary (`ceti_overview.txt`).
+
+- `build_case_folders_and_plots.py` – reorganizes `karman_fit_summary.csv` into per-case folders, each with a summary CSV and diagnostic plots (maps and scatter plots) of the fitted von Kármán parameters and their ratios, using one chosen VK fit (`simple`, `corrected`, or `weighted`).
 
 ---
 
