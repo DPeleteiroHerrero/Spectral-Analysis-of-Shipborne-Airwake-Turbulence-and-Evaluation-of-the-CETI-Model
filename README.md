@@ -8,7 +8,7 @@ This repository contains two main scripts:
 
 ---
 
-## `run_airwake_psd_superposition_grid.py`
+## `run_airwake_psd.py`
 
 This script processes airwake measurements for multiple ship motion cases and probe positions to compare their turbulence characteristics.
 
