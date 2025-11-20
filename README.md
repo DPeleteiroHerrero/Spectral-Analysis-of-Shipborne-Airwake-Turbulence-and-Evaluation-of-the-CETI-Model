@@ -129,3 +129,33 @@ Small helper script to quickly scan CETI validation results and flag problematic
   - `ceti_mismatches.csv`
 - Prints a concise summary of mismatches to the console (showing RMS, 2 dB %, variance ratio, and overlay path).
 - Tries to automatically **open `ceti_mismatches.csv`** in the default application (Windows/macOS/Linux), so you can inspect the flagged cases immediately.
+
+---
+
+## `ceti_analyze_summary.py`  *(analysis of CETI validation summary)*
+
+This script analyzes the global CETI validation results stored in `ceti_validation_summary.csv`.
+
+### What it does
+
+- Reads `ceti_validation_summary.csv` and defines a boolean `is_mismatch` for each PSD:
+  - Uses the `status` column if present (`"mismatch"` → True),  
+    otherwise reconstructs pass/fail from typical thresholds (2 dB %, RMS, variance ratio).
+- Parses from `csv_rel`:
+  - **Case** (Case01, Case02, …)
+  - **Component** (`u`, `v`, `w`)
+  - Probe coordinates **x, y, z** (from `x__.._y__.._z__..` in the filename).
+
+It then computes and writes:
+
+- Overall mismatch percentage (printed to console).
+- **By case** mismatch rates → `ceti_by_case.csv`
+- **By component** mismatch rates → `ceti_by_component.csv`
+- **By height** \(z\) mismatch rates → `ceti_by_height.csv` (if z is available)
+- **By x** position mismatch rates → `ceti_by_x.csv` (if x is available)
+- **By y** position mismatch rates → `ceti_by_y.csv` (if y is available)
+- **Best and worst examples** by RMS error (with overlay paths) → `ceti_best_worst.csv`
+- A plain-text summary for reporting → `ceti_overview.txt`
+
+All key statistics are also printed in a readable form to the terminal.
+
