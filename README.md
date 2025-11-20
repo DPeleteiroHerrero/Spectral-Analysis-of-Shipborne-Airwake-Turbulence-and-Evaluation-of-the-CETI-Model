@@ -60,3 +60,25 @@ This script batch-fits turbulence models to all measured PSDs found under `Airwa
   - `karman_fit_summary.csv` – full fit diagnostics for every PSD.
   - `tf2_params_simple.csv` – compact table of TF2 parameters only.
 
+## `tf2_graphs.py`
+
+This script is a post-processing / visualization tool for `tf2_params_simple.csv`.
+
+### What it does
+
+- Reads `tf2_params_simple.csv` and parses:
+  - `case`, `position`, `component` (`u`, `v`, `w`)
+  - All numeric variables (e.g. `K`, `wz_rad_s`, `zetz`, `wp_rad_s`, `zetp`, …).
+- Extracts the probe coordinates from `position` (e.g. `x__11p811_y__0p000_z__7p480` → x, y, z in metres).
+- For **each case** and **each numeric variable**, creates:
+  - 2D **maps** (x–y, x–z, y–z) colored by the chosen variable:
+    - `maps_<Case>_<var>_all.png` and component-specific versions (`_u`, `_v`, `_w`).
+  - **Multi-slice line plots** of the variable vs x / y / z with different slices in the other coordinates:
+    - `lines_<Case>_<var>_vs_x_multi.png`, `..._vs_y_multi.png`, `..._vs_z_multi.png`.
+  - **3-panel line figures**:
+    - `lines_<Case>_<var>_vs_xyz.png` – var vs x, y, z (no slicing, duplicates collapsed).
+    - `lines_<Case>_<var>_vs_xyz_sliced.png` – var vs x, y, z using slices at (approximately) constant other coordinates.
+
+In practice, the **sliced 3-panel plots**  
+`lines_<Case>_<var>_vs_xyz_sliced.png`  
+were the ones I actually used and could interpret most clearly.
