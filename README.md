@@ -113,7 +113,7 @@ This script validates the **CETI TF2 model** against the measured PSDs.
 
 ---
 
-## `ceti_flag_mismatches_nocli.py`
+## `ceti_flag_mismatches.py`
 
 Small helper script to quickly scan CETI validation results and flag problematic cases.
 
